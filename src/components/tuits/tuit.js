@@ -52,7 +52,10 @@ const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit }) => {
         </h2>
         {tuit.tuit}
         {tuit.youtube && <TuitVideo tuit={tuit} />}
-        {tuit.image && <TuitImage tuit={tuit} />}
+        {tuit.image &&
+          tuit.image.map(url => (
+            <img className="create-tuit-image" src={url} alt="Tuit Image" />
+          ))}
         <TuitStats tuit={tuit} likeTuit={likeTuit} dislikeTuit={dislikeTuit} />
       </div>
     </li>
