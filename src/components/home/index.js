@@ -20,8 +20,6 @@ const Home = () => {
       isMounted = false;
     };
   }, []);
-  const createTuit = () => service.createTuit("my", { tuit }).then(findTuits);
-
   const [imageAsFile, setImageAsFile] = useState("");
   const [imageUrl, setImageUrl] = useState([]);
   const uploadImage = e => {
@@ -41,6 +39,8 @@ const Home = () => {
       }
     );
   };
+  const createTuit = () =>
+    service.createTuit("my", { tuit: tuit, image: imageUrl }).then(findTuits);
 
   return (
     <div className="ttr-home">
@@ -59,9 +59,18 @@ const Home = () => {
               placeholder="What's happening?"
               className="w-100 border-0"
             ></textarea>
-            <div className="row">
+            <div
+              className="row"
+              style={{ display: "flex", flexdirection: "row" }}
+            >
               {imageUrl &&
-                imageUrl.map(url => <img src={url} alt="Tuit Image" />)}
+                imageUrl.map(url => (
+                  <img
+                    className="create-tuit-image"
+                    src={url}
+                    alt="Tuit Image"
+                  />
+                ))}
             </div>
             <div className="row">
               <div className="col-10 ttr-font-size-150pc text-primary">
