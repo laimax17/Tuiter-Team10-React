@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Zmage from "react-zmage";
 
 const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit }) => {
-  const daysOld = (tuit) => {
+  const daysOld = tuit => {
     const now = new Date();
     const nowMillis = now.getTime();
     const posted = new Date(tuit.postedOn);
@@ -33,7 +33,7 @@ const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit }) => {
       <div className="pe-2">
         {tuit.postedBy && (
           <img
-            src={`../images/${tuit.postedBy.username}.jpg`}
+            src={tuit.postedBy.avatar ? tuit.postedBy.avatar : ""}
             className="ttr-tuit-avatar-logo rounded-circle"
           />
         )}
@@ -55,25 +55,15 @@ const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit }) => {
         {tuit.youtube && <TuitVideo tuit={tuit} />}
         <div className="row">
           {tuit.image &&
-            tuit.image.map((url) => (
-              // <div
-              //   className="create-tuit-image p-2 img-thumbnail"
-              //   style={{
-              //     backgroundImage: `url(${url})`,
-              //     backgroundPosition: "center",
-              //     backgroundSize: "cover",
-              //     width: "185px",
-              //     height: "185px",
-              //   }}
-              // >
-              // </div>
+            tuit.image.map(url => (
               <Zmage
                 className="create-tuit-image p-2 img-thumbnail"
                 src={url}
+                key={url}
                 alt="Tuit Image"
                 style={{
                   width: "185px",
-                  height: "185px",
+                  height: "185px"
                 }}
               />
             ))}

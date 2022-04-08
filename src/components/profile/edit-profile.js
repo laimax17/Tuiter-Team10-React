@@ -1,6 +1,9 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import * as service from "../../services/users-service";
+import { storage } from "../../firebase/firebase";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const EditProfile = () => {
   const [profile, setProfile] = useState("");
@@ -8,6 +11,26 @@ const EditProfile = () => {
   useEffect(() => {
     setProfile(mlocation.state);
   }, []);
+
+  const uploadImage = e => {
+    const image = e.target.files[0];
+    const storageRef = ref(storage, `/images/${profile.username}-avatar`);
+    const uploadTask = uploadBytesResumable(storageRef, image);
+
+    uploadTask.on(
+      "state_changed",
+      snapshot => {},
+      error => {},
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+          let newProfile = { ...profile, avatar: downloadURL };
+          console.log(newProfile);
+          service.updateUser(newProfile).then(user => setProfile(newProfile));
+        });
+      }
+    );
+  };
+
   return (
     <div className="ttr-edit-profile">
       <div className="border border-bottom-0">
@@ -29,8 +52,8 @@ const EditProfile = () => {
           <div className="bottom-0 left-0 position-absolute">
             <div className="position-relative">
               <img
-                className="position-relative ttr-z-index-1 ttr-top-40px ttr-width-150px"
-                src="../images/nasa-3.png"
+                className="rounded-circle position-relative ttr-z-index-1 ttr-top-40px ttr-width-150px"
+                src={profile.avatar}
               />
             </div>
           </div>
@@ -44,8 +67,7 @@ const EditProfile = () => {
             title="Username"
             readOnly
             className="p-0 form-control border-0"
-            placeholder="Username"
-            value={profile.username}
+            placeholder={profile.username}
           />
         </div>
         <div className="border border-secondary rounded-3 p-2 mb-3">
@@ -53,7 +75,8 @@ const EditProfile = () => {
           <input
             id="first-name"
             className="p-0 form-control border-0"
-            placeholder="Alan"
+            placeholder="First Name"
+            value={profile.firstName}
           />
         </div>
         <div className="border border-secondary rounded-3 p-2 mb-3">
@@ -61,7 +84,8 @@ const EditProfile = () => {
           <input
             id="last-name"
             className="p-0 form-control border-0"
-            placeholder="Turin"
+            placeholder="Last Name"
+            value={profile.lastName}
           />
         </div>
         <div className="border border-secondary rounded-3 p-2 mb-3">
@@ -96,7 +120,12 @@ const EditProfile = () => {
         </div>
         <div className="border border-secondary rounded-3 p-2 mb-3">
           <label for="photo">Profile photo</label>
-          <input id="photo" className="p-0 form-control border-0" type="file" />
+          <input
+            id="photo"
+            className="p-0 form-control border-0"
+            onChange={uploadImage}
+            type="file"
+          />
         </div>
         <div className="border border-secondary rounded-3 p-2 mb-3">
           <label for="header">Header image</label>

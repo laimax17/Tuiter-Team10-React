@@ -26,6 +26,6 @@ const service = {
 };
 
 export const updateUser = user =>
-  axios.pput(`${USERS_API}/${user._id}`, user).then(response => response.data);
+  axios.put(`${USERS_API}/${user._id}`, user).then(response => response.data);
 
 export default service;

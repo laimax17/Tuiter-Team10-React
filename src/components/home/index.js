@@ -11,8 +11,8 @@ const Home = () => {
   const { uid } = useParams();
   const [tuits, setTuits] = useState([]);
   const [tuit, setTuit] = useState("");
-  const userId = uid;
-  const findTuits = () => service.findAllTuits().then(tuits => setTuits(tuits));
+  const findTuits = () =>
+    service.findAllTuits().then(tuits => setTuits(tuits.reverse()));
   useEffect(() => {
     let isMounted = true;
     findTuits();
@@ -20,11 +20,9 @@ const Home = () => {
       isMounted = false;
     };
   }, []);
-  const [imageAsFile, setImageAsFile] = useState("");
   const [imageUrl, setImageUrl] = useState([]);
   const uploadImage = e => {
     const image = e.target.files[0];
-    setImageAsFile(image);
     const storageRef = ref(storage, `/images/${image.name}`);
     const uploadTask = uploadBytesResumable(storageRef, image);
 
@@ -67,6 +65,7 @@ const Home = () => {
                 imageUrl.map(url => (
                   <img
                     className="create-tuit-image"
+                    key={url}
                     src={url}
                     alt="Tuit Image"
                   />
