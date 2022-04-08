@@ -3,9 +3,10 @@ import TuitStats from "./tuit-stats";
 import TuitImage from "./tuit-image";
 import TuitVideo from "./tuit-video";
 import { Link } from "react-router-dom";
+import Zmage from "react-zmage";
 
 const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit }) => {
-  const daysOld = tuit => {
+  const daysOld = (tuit) => {
     const now = new Date();
     const nowMillis = now.getTime();
     const posted = new Date(tuit.postedOn);
@@ -52,10 +53,31 @@ const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit }) => {
         </h2>
         {tuit.tuit}
         {tuit.youtube && <TuitVideo tuit={tuit} />}
-        {tuit.image &&
-          tuit.image.map(url => (
-            <img className="create-tuit-image" src={url} alt="Tuit Image" />
-          ))}
+        <div className="row">
+          {tuit.image &&
+            tuit.image.map((url) => (
+              // <div
+              //   className="create-tuit-image p-2 img-thumbnail"
+              //   style={{
+              //     backgroundImage: `url(${url})`,
+              //     backgroundPosition: "center",
+              //     backgroundSize: "cover",
+              //     width: "185px",
+              //     height: "185px",
+              //   }}
+              // >
+              // </div>
+              <Zmage
+                className="create-tuit-image p-2 img-thumbnail"
+                src={url}
+                alt="Tuit Image"
+                style={{
+                  width: "185px",
+                  height: "185px",
+                }}
+              />
+            ))}
+        </div>
         <TuitStats tuit={tuit} likeTuit={likeTuit} dislikeTuit={dislikeTuit} />
       </div>
     </li>
