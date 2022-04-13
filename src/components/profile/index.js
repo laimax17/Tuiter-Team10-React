@@ -6,7 +6,7 @@ import {
   Route,
   Routes,
   useNavigate,
-  useLocation
+  useLocation,
 } from "react-router-dom";
 import * as service from "../../services/security-service";
 import TuitsAndReplies from "./tuits-and-replies";
@@ -21,6 +21,7 @@ const Profile = () => {
   useEffect(async () => {
     try {
       const user = await service.profile();
+      console.log(user);
       setProfile(user);
     } catch (e) {
       navigate("/login");

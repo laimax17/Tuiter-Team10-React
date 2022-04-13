@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import * as service from "../../services/users-service";
 import { storage } from "../../firebase/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import "./profile.css";
 
 const EditProfile = () => {
   const [profile, setProfile] = useState("");
@@ -12,20 +13,21 @@ const EditProfile = () => {
     setProfile(mlocation.state);
   }, []);
 
-  const uploadImage = e => {
+  const uploadImage = (e) => {
     const image = e.target.files[0];
     const storageRef = ref(storage, `/images/${profile.username}-avatar`);
     const uploadTask = uploadBytesResumable(storageRef, image);
 
     uploadTask.on(
       "state_changed",
-      snapshot => {},
-      error => {},
+      (snapshot) => {},
+      (error) => {},
       () => {
-        getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log(downloadURL);
           let newProfile = { ...profile, avatar: downloadURL };
           console.log(newProfile);
-          service.updateUser(newProfile).then(user => setProfile(newProfile));
+          service.updateUser(newProfile).then((user) => setProfile(newProfile));
         });
       }
     );
@@ -52,7 +54,7 @@ const EditProfile = () => {
           <div className="bottom-0 left-0 position-absolute">
             <div className="position-relative">
               <img
-                className="rounded-circle position-relative ttr-z-index-1 ttr-top-40px ttr-width-150px"
+                className="rounded-circle position-relative ttr-z-index-1 ttr-top-40px ttr-width-150px profile-logo"
                 src={profile.avatar}
               />
             </div>
