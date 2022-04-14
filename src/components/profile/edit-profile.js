@@ -28,8 +28,8 @@ const EditProfile = () => {
 
     uploadTask.on(
       "state_changed",
-      snapshot => {},
-      error => {},
+      (snapshot) => {},
+      (error) => {},
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
           let newProfile = { ...profile, avatar: downloadURL };
@@ -39,19 +39,24 @@ const EditProfile = () => {
     );
   };
 
-  const uploadHeader = e => {
+  const uploadHeader = (e) => {
     const image = e.target.files[0];
     const storageRef = ref(storage, `/images/${profile.username}-header`);
     const uploadTask = uploadBytesResumable(storageRef, image);
 
     uploadTask.on(
       "state_changed",
-      snapshot => {},
-      error => {},
+      (snapshot) => {},
+      (error) => {},
       () => {
-        getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           console.log(downloadURL);
+<<<<<<< HEAD
           setProfile({ ...profile, header: downloadURL });
+=======
+          let newProfile = { ...profile, header: downloadURL };
+          service.updateUser(newProfile).then((user) => setProfile(newProfile));
+>>>>>>> 137b202245aa5f0ce6ebbf737081cdfc50554046
         });
       }
     );
@@ -75,7 +80,18 @@ const EditProfile = () => {
         </Link>
         <h4 className="p-2 mb-0 pb-0 fw-bolder">Edit profile</h4>
         <div className="mb-5 position-relative">
-          <img className="w-100" src={profile.header} />
+          <div
+            className="w-100"
+            style={{
+              width: "100%",
+              height: "300px",
+              marginTop: "20px",
+              backgroundImage: `url(${profile.header})`,
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+            }}
+          />
+          {/* <img className="w-100" src={profile.header} /> */}
           <div className="bottom-0 left-0 position-absolute">
             <div className="position-relative">
               <img
