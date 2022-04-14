@@ -6,7 +6,7 @@ import {
   Route,
   Routes,
   useNavigate,
-  useLocation,
+  useLocation
 } from "react-router-dom";
 import * as service from "../../services/security-service";
 import TuitsAndReplies from "./tuits-and-replies";
@@ -21,6 +21,7 @@ const Profile = () => {
   useEffect(async () => {
     try {
       const user = await service.profile();
+      console.log("suck");
       console.log(user);
       setProfile(user);
     } catch (e) {
@@ -39,7 +40,7 @@ const Profile = () => {
         </h4>
         <span className="ps-2">67.6K Tuits</span>
         <div className="mb-5 position-relative">
-          <img className="w-100" src="../images/nasa-profile-header.jpg" />
+          <img className="w-100" src={profile.header} />
           <div className="bottom-0 left-0 position-absolute">
             <div className="position-relative">
               <img

@@ -13,21 +13,39 @@ const EditProfile = () => {
     setProfile(mlocation.state);
   }, []);
 
-  const uploadImage = (e) => {
+  const uploadAvatar = e => {
     const image = e.target.files[0];
     const storageRef = ref(storage, `/images/${profile.username}-avatar`);
     const uploadTask = uploadBytesResumable(storageRef, image);
 
     uploadTask.on(
       "state_changed",
-      (snapshot) => {},
-      (error) => {},
+      snapshot => {},
+      error => {},
       () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
           console.log(downloadURL);
           let newProfile = { ...profile, avatar: downloadURL };
-          console.log(newProfile);
-          service.updateUser(newProfile).then((user) => setProfile(newProfile));
+          service.updateUser(newProfile).then(user => setProfile(newProfile));
+        });
+      }
+    );
+  };
+
+  const uploadHeader = e => {
+    const image = e.target.files[0];
+    const storageRef = ref(storage, `/images/${profile.username}-header`);
+    const uploadTask = uploadBytesResumable(storageRef, image);
+
+    uploadTask.on(
+      "state_changed",
+      snapshot => {},
+      error => {},
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+          console.log(downloadURL);
+          let newProfile = { ...profile, header: downloadURL };
+          service.updateUser(newProfile).then(user => setProfile(newProfile));
         });
       }
     );
@@ -50,7 +68,7 @@ const EditProfile = () => {
         </Link>
         <h4 className="p-2 mb-0 pb-0 fw-bolder">Edit profile</h4>
         <div className="mb-5 position-relative">
-          <img className="w-100" src="../images/nasa-profile-header.jpg" />
+          <img className="w-100" src={profile.header} />
           <div className="bottom-0 left-0 position-absolute">
             <div className="position-relative">
               <img
@@ -125,7 +143,7 @@ const EditProfile = () => {
           <input
             id="photo"
             className="p-0 form-control border-0"
-            onChange={uploadImage}
+            onChange={uploadAvatar}
             type="file"
           />
         </div>
@@ -134,6 +152,7 @@ const EditProfile = () => {
           <input
             id="header"
             className="p-0 form-control border-0"
+            onChange={uploadHeader}
             type="file"
           />
         </div>

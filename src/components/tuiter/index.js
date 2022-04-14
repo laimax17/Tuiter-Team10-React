@@ -21,7 +21,7 @@ export const TuitContext = React.createContext({});
 function Tuiter() {
   const [isZoomed, setIsZoomed] = React.useState(false);
   const [url, setUrl] = React.useState("");
-  const handleZoom = (e) => {
+  const handleZoom = e => {
     setUrl(e.target.src);
     setIsZoomed(!isZoomed);
   };
