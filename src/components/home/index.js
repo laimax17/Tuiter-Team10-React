@@ -1,24 +1,30 @@
 import React from "react";
 import Tuits from "../tuits";
 import * as service from "../../services/tuits-service";
+import * as userService from "../../services/security-service";
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { storage } from "../../firebase/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const Home = () => {
   const location = useLocation();
   const { uid } = useParams();
+  const navigate = useNavigate();
   const [tuits, setTuits] = useState([]);
   const [tuit, setTuit] = useState("");
+  const [profile, setProfile] = useState({});
+
   const findTuits = () =>
     service.findAllTuits().then(tuits => setTuits(tuits.reverse()));
-  useEffect(() => {
-    let isMounted = true;
-    findTuits();
-    return () => {
-      isMounted = false;
-    };
+  useEffect(async () => {
+    try {
+      const user = await userService.profile();
+      setProfile(user);
+      findTuits();
+    } catch (e) {
+      navigate("/login");
+    }
   }, []);
   const [imageUrl, setImageUrl] = useState([]);
   const uploadImage = e => {
@@ -48,7 +54,7 @@ const Home = () => {
           <div className="p-2">
             <img
               className="ttr-width-50px rounded-circle"
-              src="../images/nasa-logo.jpg"
+              src={profile.avatar}
             />
           </div>
           <div className="p-2 w-100">
