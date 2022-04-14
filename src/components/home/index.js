@@ -17,7 +17,7 @@ const Home = () => {
   const [profile, setProfile] = useState({});
 
   const findTuits = () =>
-    service.findAllTuits().then((tuits) => setTuits(tuits.reverse()));
+    service.findAllTuits().then(tuits => setTuits(tuits.reverse()));
   useEffect(async () => {
     try {
       const user = await userService.profile();
@@ -28,21 +28,16 @@ const Home = () => {
     }
   }, []);
   const [imageUrl, setImageUrl] = useState([]);
-  const uploadImage = (e) => {
+  const uploadImage = e => {
     const image = e.target.files[0];
     const storageRef = ref(storage, `/images/${image.name}`);
     const uploadTask = uploadBytesResumable(storageRef, image);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {},
-      (error) => {},
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setImageUrl([...imageUrl, downloadURL]);
-        });
-      }
-    );
+    uploadTask.on("state_changed", () => {
+      getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+        setImageUrl([...imageUrl, downloadURL]);
+      });
+    });
   };
   const createTuit = () => {
     setTuit("");
@@ -50,12 +45,10 @@ const Home = () => {
     service.createTuit("my", { tuit: tuit, image: imageUrl }).then(findTuits);
   };
 
-  const handleDelete = (url) => {
-    console.log(url);
-    imageUrl.indexOf(url) > -1 &&
-      setImageUrl(imageUrl.filter((i) => i !== url));
+  const handleDelete = url => {
+    imageUrl.indexOf(url) > -1 && setImageUrl(imageUrl.filter(i => i !== url));
   };
-  //123
+
   return (
     <div className="ttr-home">
       <div className="border border-bottom-0">
@@ -69,7 +62,7 @@ const Home = () => {
           </div>
           <div className="p-2 w-100">
             <textarea
-              onChange={(e) => setTuit(e.target.value)}
+              onChange={e => setTuit(e.target.value)}
               value={tuit}
               placeholder="What's happening?"
               className="w-100 border-0"
@@ -79,7 +72,7 @@ const Home = () => {
               style={{ display: "flex", flexdirection: "row" }}
             >
               {imageUrl &&
-                imageUrl.map((url) => (
+                imageUrl.map(url => (
                   <li className="image">
                     <i
                       onClick={() => handleDelete(url)}

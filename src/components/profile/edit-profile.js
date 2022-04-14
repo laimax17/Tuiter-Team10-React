@@ -23,19 +23,19 @@ const EditProfile = () => {
 
   const uploadAvatar = e => {
     const image = e.target.files[0];
-    const storageRef = ref(storage, `/images/${profile.username}-avatar`);
+    const storageRef = ref(storage, `/images/${image.name}`);
     const uploadTask = uploadBytesResumable(storageRef, image);
 
     uploadTask.on("state_changed", () => {
       getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
-        setProfile({ ...profile, header: downloadURL });
+        setProfile({ ...profile, avatar: downloadURL });
       });
     });
   };
 
   const uploadHeader = e => {
     const image = e.target.files[0];
-    const storageRef = ref(storage, `/images/${profile.username}-header`);
+    const storageRef = ref(storage, `/images/${image.name}`);
     const uploadTask = uploadBytesResumable(storageRef, image);
 
     uploadTask.on("state_changed", () => {
