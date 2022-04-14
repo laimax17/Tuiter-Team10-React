@@ -26,53 +26,36 @@ const EditProfile = () => {
     const storageRef = ref(storage, `/images/${profile.username}-avatar`);
     const uploadTask = uploadBytesResumable(storageRef, image);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {},
-      (error) => {},
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
-          let newProfile = { ...profile, avatar: downloadURL };
-          setProfile({ ...profile, header: downloadURL });
-        });
-      }
-    );
+    uploadTask.on("state_changed", () => {
+      getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+        setProfile({ ...profile, header: downloadURL });
+      });
+    });
   };
 
-  const uploadHeader = (e) => {
+  const uploadHeader = e => {
     const image = e.target.files[0];
     const storageRef = ref(storage, `/images/${profile.username}-header`);
     const uploadTask = uploadBytesResumable(storageRef, image);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {},
-      (error) => {},
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log(downloadURL);
-<<<<<<< HEAD
-          setProfile({ ...profile, header: downloadURL });
-=======
-          let newProfile = { ...profile, header: downloadURL };
-          service.updateUser(newProfile).then((user) => setProfile(newProfile));
->>>>>>> 137b202245aa5f0ce6ebbf737081cdfc50554046
-        });
-      }
-    );
+    uploadTask.on("state_changed", () => {
+      getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+        setProfile({ ...profile, header: downloadURL });
+      });
+    });
   };
 
   return (
     <div className="ttr-edit-profile">
       <div className="border border-bottom-0">
         <Link
-          to="/profile"
+          to="/profile/mytuits"
           className="btn btn-light rounded-pill fa-pull-left fw-bolder mt-2 mb-2 ms-2"
         >
           <i className="fa fa-close"></i>
         </Link>
         <Link
-          to="/profile"
+          to="/profile/mytuits"
           onClick={saveState}
           className="btn btn-dark rounded-pill fa-pull-right fw-bolder mt-2 mb-2 me-2"
         >
@@ -88,10 +71,9 @@ const EditProfile = () => {
               marginTop: "20px",
               backgroundImage: `url(${profile.header})`,
               backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
+              backgroundSize: "cover"
             }}
           />
-          {/* <img className="w-100" src={profile.header} /> */}
           <div className="bottom-0 left-0 position-absolute">
             <div className="position-relative">
               <img
