@@ -3,7 +3,8 @@ import TuitStats from "./tuit-stats";
 import TuitImage from "./tuit-image";
 import TuitVideo from "./tuit-video";
 import { Link } from "react-router-dom";
-import Zmage from "react-zmage";
+import { TuitContext } from "../tuiter";
+import { useContext } from "react";
 
 const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit }) => {
   const daysOld = (tuit) => {
@@ -28,6 +29,9 @@ const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit }) => {
     }
     return old;
   };
+
+  const { handleZoom } = useContext(TuitContext);
+
   return (
     <li className="p-2 ttr-tuit list-group-item d-flex rounded-0">
       <div className="pe-2">
@@ -48,7 +52,7 @@ const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit }) => {
         </Link>
         <h2 className="fs-5">
           {tuit.postedBy && tuit.postedBy.username}@
-          {tuit.postedBy && tuit.postedBy.username} -
+          {tuit.postedBy && tuit.postedBy.email} -
           <span className="ms-1">{daysOld(tuit)}</span>
         </h2>
         {tuit.tuit}
@@ -56,7 +60,8 @@ const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit }) => {
         <div className="row">
           {tuit.image &&
             tuit.image.map((url) => (
-              <Zmage
+              <img
+                onClick={handleZoom}
                 className="create-tuit-image p-2 img-thumbnail"
                 src={url}
                 key={url}
