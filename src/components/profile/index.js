@@ -52,7 +52,7 @@ const Profile = () => {
           <div className="bottom-0 left-0 position-absolute">
             <div className="position-relative">
               <img
-                className="rounded-circle position-relative ttr-z-index-1 ttr-top-40px ttr-width-150px"
+                className="rounded-circle position-relative ttr-z-index-1 ttr-top-40px ttr-width-150px profile-logo"
                 src={profile.avatar}
               />
             </div>
