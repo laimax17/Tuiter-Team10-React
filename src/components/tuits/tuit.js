@@ -60,15 +60,17 @@ const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit }) => {
         <div className="row">
           {tuit.image &&
             tuit.image.map((url) => (
-              <img
-                onClick={handleZoom}
-                className="create-tuit-image p-2 img-thumbnail"
-                src={url}
-                key={url}
+              <div
+                onClick={() => handleZoom(url)}
                 alt="Tuit Image"
+                className="m-1 img-thumbnail create-tuit-image"
                 style={{
-                  width: "185px",
-                  height: "185px",
+                  display: "inline-block",
+                  width: "150px",
+                  height: "150px",
+                  backgroundImage: `url(${url})`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
                 }}
               />
             ))}

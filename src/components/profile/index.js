@@ -6,7 +6,7 @@ import {
   Route,
   Routes,
   useNavigate,
-  useLocation
+  useLocation,
 } from "react-router-dom";
 import * as service from "../../services/security-service";
 import TuitsAndReplies from "./tuits-and-replies";
@@ -38,7 +38,17 @@ const Profile = () => {
         </h4>
         <span className="ps-2">67.6K Tuits</span>
         <div className="mb-5 position-relative">
-          <img className="w-100" src={profile.header} />
+          <div
+            className="w-100"
+            style={{
+              width: "100%",
+              height: "300px",
+              backgroundImage: `url(${profile.header})`,
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+            }}
+          />
+          {/* <img className="w-100" src={profile.header} /> */}
           <div className="bottom-0 left-0 position-absolute">
             <div className="position-relative">
               <img

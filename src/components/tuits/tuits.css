@@ -1,5 +1,7 @@
 .image-father {
   display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
 .avatar-logo {
@@ -7,4 +9,8 @@
   height: 50px;
   border-radius: 50%;
   margin-right: 10px;
+}
+
+.create-tuit-image:hover {
+  cursor: pointer;
 }
