@@ -1,0 +1,8 @@
+.image {
+  position: relative;
+}
+.delete-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

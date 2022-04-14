@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { storage } from "../../firebase/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import "./index.css";
 
 const Home = () => {
   const location = useLocation();
@@ -12,7 +13,7 @@ const Home = () => {
   const [tuits, setTuits] = useState([]);
   const [tuit, setTuit] = useState("");
   const findTuits = () =>
-    service.findAllTuits().then(tuits => setTuits(tuits.reverse()));
+    service.findAllTuits().then((tuits) => setTuits(tuits.reverse()));
   useEffect(() => {
     let isMounted = true;
     findTuits();
@@ -21,25 +22,33 @@ const Home = () => {
     };
   }, []);
   const [imageUrl, setImageUrl] = useState([]);
-  const uploadImage = e => {
+  const uploadImage = (e) => {
     const image = e.target.files[0];
     const storageRef = ref(storage, `/images/${image.name}`);
     const uploadTask = uploadBytesResumable(storageRef, image);
 
     uploadTask.on(
       "state_changed",
-      snapshot => {},
-      error => {},
+      (snapshot) => {},
+      (error) => {},
       () => {
-        getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setImageUrl([...imageUrl, downloadURL]);
         });
       }
     );
   };
-  const createTuit = () =>
+  const createTuit = () => {
+    setTuit("");
+    setImageUrl([]);
     service.createTuit("my", { tuit: tuit, image: imageUrl }).then(findTuits);
+  };
 
+  const handleDelete = (url) => {
+    console.log(url);
+    imageUrl.indexOf(url) > -1 &&
+      setImageUrl(imageUrl.filter((i) => i !== url));
+  };
   return (
     <div className="ttr-home">
       <div className="border border-bottom-0">
@@ -53,7 +62,8 @@ const Home = () => {
           </div>
           <div className="p-2 w-100">
             <textarea
-              onChange={e => setTuit(e.target.value)}
+              onChange={(e) => setTuit(e.target.value)}
+              value={tuit}
               placeholder="What's happening?"
               className="w-100 border-0"
             ></textarea>
@@ -62,13 +72,20 @@ const Home = () => {
               style={{ display: "flex", flexdirection: "row" }}
             >
               {imageUrl &&
-                imageUrl.map(url => (
-                  <img
-                    className="create-tuit-image"
-                    key={url}
-                    src={url}
-                    alt="Tuit Image"
-                  />
+                imageUrl.map((url) => (
+                  <li className="image">
+                    <i
+                      onClick={() => handleDelete(url)}
+                      className="fas fa-remove fa-2x fa-pull-right delete-image"
+                    ></i>
+                    <img
+                      className="create-tuit-image"
+                      key={url}
+                      src={url}
+                      alt="Tuit Image"
+                      width={200}
+                    />
+                  </li>
                 ))}
             </div>
             <div className="row">
