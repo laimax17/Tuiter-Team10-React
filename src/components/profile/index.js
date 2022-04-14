@@ -6,7 +6,7 @@ import {
   Route,
   Routes,
   useNavigate,
-  useLocation,
+  useLocation
 } from "react-router-dom";
 import * as service from "../../services/security-service";
 import TuitsAndReplies from "./tuits-and-replies";
@@ -32,11 +32,6 @@ const Profile = () => {
   return (
     <div className="ttr-profile">
       <div className="border border-bottom-0">
-        <h4 className="p-2 mb-0 pb-0 fw-bolder">
-          {profile.username}
-          <i className="fa fa-badge-check text-primary"></i>
-        </h4>
-        <span className="ps-2">67.6K Tuits</span>
         <div className="mb-5 position-relative">
           <div
             className="w-100"
@@ -45,10 +40,9 @@ const Profile = () => {
               height: "300px",
               backgroundImage: `url(${profile.header})`,
               backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
+              backgroundSize: "cover"
             }}
           />
-          {/* <img className="w-100" src={profile.header} /> */}
           <div className="bottom-0 left-0 position-absolute">
             <div className="position-relative">
               <img
@@ -78,7 +72,7 @@ const Profile = () => {
             <i className="fa fa-badge-check text-primary"></i>
           </h4>
           <h6 className="pt-0">@{profile.username}</h6>
-          <p className="pt-2">There's space for everybody. Sparkles</p>
+          <p className="pt-2">{profile.biography}</p>
           <p>
             <i className="far fa-location-dot me-2"></i>
             Pale Blue Dot

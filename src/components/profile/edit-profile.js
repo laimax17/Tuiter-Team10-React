@@ -13,55 +13,50 @@ const EditProfile = () => {
     setProfile(mlocation.state);
   }, []);
 
-  const uploadAvatar = (e) => {
+  const saveState = e => {
+    service.updateUser(profile);
+  };
+
+  const editBio = e => {
+    setProfile({ ...profile, biography: e.target.value });
+  };
+
+  const uploadAvatar = e => {
     const image = e.target.files[0];
     const storageRef = ref(storage, `/images/${profile.username}-avatar`);
     const uploadTask = uploadBytesResumable(storageRef, image);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {},
-      (error) => {},
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log(downloadURL);
-          let newProfile = { ...profile, avatar: downloadURL };
-          service.updateUser(newProfile).then((user) => setProfile(newProfile));
-        });
-      }
-    );
+    uploadTask.on("state_changed", () => {
+      getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+        setProfile({ ...profile, header: downloadURL });
+      });
+    });
   };
 
-  const uploadHeader = (e) => {
+  const uploadHeader = e => {
     const image = e.target.files[0];
     const storageRef = ref(storage, `/images/${profile.username}-header`);
     const uploadTask = uploadBytesResumable(storageRef, image);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {},
-      (error) => {},
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log(downloadURL);
-          let newProfile = { ...profile, header: downloadURL };
-          service.updateUser(newProfile).then((user) => setProfile(newProfile));
-        });
-      }
-    );
+    uploadTask.on("state_changed", () => {
+      getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+        setProfile({ ...profile, header: downloadURL });
+      });
+    });
   };
 
   return (
     <div className="ttr-edit-profile">
       <div className="border border-bottom-0">
         <Link
-          to="/profile"
+          to="/profile/mytuits"
           className="btn btn-light rounded-pill fa-pull-left fw-bolder mt-2 mb-2 ms-2"
         >
           <i className="fa fa-close"></i>
         </Link>
         <Link
-          to="/profile"
+          to="/profile/mytuits"
+          onClick={saveState}
           className="btn btn-dark rounded-pill fa-pull-right fw-bolder mt-2 mb-2 me-2"
         >
           Save
@@ -76,10 +71,9 @@ const EditProfile = () => {
               marginTop: "20px",
               backgroundImage: `url(${profile.header})`,
               backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
+              backgroundSize: "cover"
             }}
           />
-          {/* <img className="w-100" src={profile.header} /> */}
           <div className="bottom-0 left-0 position-absolute">
             <div className="position-relative">
               <img
@@ -121,7 +115,11 @@ const EditProfile = () => {
         </div>
         <div className="border border-secondary rounded-3 p-2 mb-3">
           <label htmlFor="bio">Bio</label>
-          <textarea className="p-0 form-control border-0" id="bio"></textarea>
+          <textarea
+            onChange={editBio}
+            className="p-0 form-control border-0"
+            id="bio"
+          ></textarea>
         </div>
         <div className="border border-secondary rounded-3 p-2 mb-3">
           <label htmlFor="date-of-birth">Date of birth</label>
