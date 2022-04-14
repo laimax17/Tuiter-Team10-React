@@ -62,7 +62,7 @@ const Home = () => {
         <div className="d-flex">
           <div className="p-2">
             <img
-              className="ttr-width-50px rounded-circle"
+              className="ttr-width-50px rounded-circle avatar-logo"
               src={profile.avatar}
             />
           </div>
