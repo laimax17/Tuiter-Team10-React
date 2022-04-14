@@ -55,6 +55,7 @@ const Home = () => {
     imageUrl.indexOf(url) > -1 &&
       setImageUrl(imageUrl.filter((i) => i !== url));
   };
+  //123
   return (
     <div className="ttr-home">
       <div className="border border-bottom-0">
