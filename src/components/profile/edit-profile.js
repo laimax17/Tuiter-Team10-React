@@ -13,6 +13,14 @@ const EditProfile = () => {
     setProfile(mlocation.state);
   }, []);
 
+  const saveState = e => {
+    service.updateUser(profile);
+  };
+
+  const editBio = e => {
+    setProfile({ ...profile, biography: e.target.value });
+  };
+
   const uploadAvatar = e => {
     const image = e.target.files[0];
     const storageRef = ref(storage, `/images/${profile.username}-avatar`);
@@ -24,9 +32,8 @@ const EditProfile = () => {
       error => {},
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
-          console.log(downloadURL);
           let newProfile = { ...profile, avatar: downloadURL };
-          service.updateUser(newProfile).then(user => setProfile(newProfile));
+          setProfile({ ...profile, header: downloadURL });
         });
       }
     );
@@ -44,8 +51,7 @@ const EditProfile = () => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
           console.log(downloadURL);
-          let newProfile = { ...profile, header: downloadURL };
-          service.updateUser(newProfile).then(user => setProfile(newProfile));
+          setProfile({ ...profile, header: downloadURL });
         });
       }
     );
@@ -62,6 +68,7 @@ const EditProfile = () => {
         </Link>
         <Link
           to="/profile"
+          onClick={saveState}
           className="btn btn-dark rounded-pill fa-pull-right fw-bolder mt-2 mb-2 me-2"
         >
           Save
@@ -110,7 +117,11 @@ const EditProfile = () => {
         </div>
         <div className="border border-secondary rounded-3 p-2 mb-3">
           <label htmlFor="bio">Bio</label>
-          <textarea className="p-0 form-control border-0" id="bio"></textarea>
+          <textarea
+            onChange={editBio}
+            className="p-0 form-control border-0"
+            id="bio"
+          ></textarea>
         </div>
         <div className="border border-secondary rounded-3 p-2 mb-3">
           <label htmlFor="date-of-birth">Date of birth</label>

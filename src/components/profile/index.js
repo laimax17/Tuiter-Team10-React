@@ -68,7 +68,7 @@ const Profile = () => {
             <i className="fa fa-badge-check text-primary"></i>
           </h4>
           <h6 className="pt-0">@{profile.username}</h6>
-          <p className="pt-2">There's space for everybody. Sparkles</p>
+          <p className="pt-2">{profile.biography}</p>
           <p>
             <i className="far fa-location-dot me-2"></i>
             Pale Blue Dot
