@@ -6,3 +6,6 @@
   top: 0;
   left: 0;
 }
+.delete-image:hover {
+  cursor: pointer;
+}
