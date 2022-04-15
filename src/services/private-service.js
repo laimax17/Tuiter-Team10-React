@@ -9,12 +9,12 @@ const api = axios.create({
   withCredentials: true,
 });
 
-const setPublic = { "isPrivate": true };
-const setPrivate = { "isPrivate": false };
+const setPublic = { "isPrivate": false };
+const setPrivate = { "isPrivate": true };
 
 export const setTuitPublic = (tid, setPublic) => 
-    api.post(`${TUITS_API}/${tid}/isPrivate`,setPublic).then(response => response.data);
+    api.put(`${TUITS_API}/${tid}/isPrivate`,setPublic).then(response => response.data);
 
 export const setTuitPrivate = (tid, setPrivate) => 
-    api.post(`${TUITS_API}/${tid}/isPrivate`,setPrivate).then(response => response.data);
+    api.put(`${TUITS_API}/${tid}/isPrivate`,setPrivate).then(response => response.data);
 

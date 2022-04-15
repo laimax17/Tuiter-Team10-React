@@ -38,6 +38,6 @@ export const findIfUserDislikesTuit = (uid, tid) =>
     .get(`${USERS_API}/${uid}/if/dislikes/${tid}`)
     .then(response => response.data);
 
-export const setTuitPublic = tid => api.post(`${TUITS_API}/${tid}/public`);
+export const setTuitPublic = tid => api.put(`${TUITS_API}/${tid}/public`);
 
-export const setTuitPrivate = tid => api.post(`${TUITS_API}/${tid}/private`);
+export const setTuitPrivate = tid => api.put(`${TUITS_API}/${tid}/private`);
