@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import TuitStats from "./tuit-stats";
-import TuitImage from "./tuit-image";
+//import TuitImage from "./tuit-image";
 import TuitVideo from "./tuit-video";
+import TuitPrivate from "./tuit-private";
 import { Link } from "react-router-dom";
 import { TuitContext } from "../tuiter";
 import { useContext } from "react";
+import * as userService from "../../services/users-service";
+import * as profileService from "../../services/security-service";
 
-const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit }) => {
+const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit, setTuitPrivate, setTuitPublic }) => {
   const daysOld = (tuit) => {
     const now = new Date();
     const nowMillis = now.getTime();
@@ -31,6 +34,41 @@ const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit }) => {
   };
 
   const { handleZoom } = useContext(TuitContext);
+  
+  
+  const getUser = async () => {
+    const user = await profileService.profile(tuit.userId);
+    return user;
+  }; 
+  
+  const [ifMyTuit, setIfMyTuit] = useState( false
+    // tuit.Tuit.postedBy._id === currentUserId
+  );
+  let user;
+  getUser().then(data => {
+    user = data;
+    if (tuit.postedBy._id === user._id) {
+      setIfMyTuit(true);
+    } else {
+      setIfMyTuit(false);
+    }
+    
+  });
+
+  
+
+  // const a = getUser().then();
+
+  // const userid = user._id;
+
+
+
+  // console.log("curr user id is  ", userid);
+  // console.log(tuit.postedBy._id);
+  // console.log("user is ", tuit.Tuit.postedBy._id);
+  
+
+
 
   return (
     <li className="p-2 ttr-tuit list-group-item d-flex rounded-0">
@@ -76,6 +114,13 @@ const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit }) => {
             ))}
         </div>
         <TuitStats tuit={tuit} likeTuit={likeTuit} dislikeTuit={dislikeTuit} />
+
+        <div>
+          { ifMyTuit ?
+              <TuitPrivate tuit={tuit} setTuitPublic={setTuitPublic} setTuitPrivate={setTuitPrivate} />
+              : <p1></p1>
+          }
+        </div>
       </div>
     </li>
   );
