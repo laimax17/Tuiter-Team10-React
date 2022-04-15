@@ -41,9 +41,7 @@ const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit, setTuitPrivate, setTuit
     return user;
   }; 
   
-  const [ifMyTuit, setIfMyTuit] = useState( false
-    // tuit.Tuit.postedBy._id === currentUserId
-  );
+  const [ifMyTuit, setIfMyTuit] = useState( false );
   let user;
   getUser().then(data => {
     user = data;
@@ -55,22 +53,18 @@ const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit, setTuitPrivate, setTuit
     
   });
 
+const notMyTuitAndPrivate = (ifMyTuit === false) && (tuit.isPrivate === true);
+console.log(notMyTuitAndPrivate);
   
-
-  // const a = getUser().then();
-
-  // const userid = user._id;
-
-
-
-  // console.log("curr user id is  ", userid);
-  // console.log(tuit.postedBy._id);
-  // console.log("user is ", tuit.Tuit.postedBy._id);
-  
-
-
+//if not my tuit and isPrivate==true then dont render, else render
+  // (!ifMyTuit && tuit.isPrivate)
 
   return (
+    
+   
+  <div>
+    { notMyTuitAndPrivate ?  (<span></span>): (
+      <div>
     <li className="p-2 ttr-tuit list-group-item d-flex rounded-0">
       <div className="pe-2">
         {tuit.postedBy && (
@@ -123,6 +117,11 @@ const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit, setTuitPrivate, setTuit
         </div>
       </div>
     </li>
+    
+    </div>)
+    
+        }
+    </div>
   );
 };
 export default Tuit;
