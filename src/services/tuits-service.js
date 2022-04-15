@@ -23,7 +23,7 @@ export const createTuit = (uid, tuit) =>
   api.post(`${USERS_API}/${uid}/tuits`, tuit).then(response => response.data);
 
 export const updateTuit = (tid, tuit) =>
-  api.post(`${TUITS_API}/${tid}`, tuit).then(response => response.data);
+  api.put(`${TUITS_API}/${tid}`, tuit).then(response => response.data);
 
 export const deleteTuit = tid =>
   api.delete(`${TUITS_API}/${tid}`).then(response => response.data);
@@ -37,7 +37,3 @@ export const findIfUserDislikesTuit = (uid, tid) =>
   api
     .get(`${USERS_API}/${uid}/if/dislikes/${tid}`)
     .then(response => response.data);
-
-export const setTuitPublic = tid => api.put(`${TUITS_API}/${tid}/public`);
-
-export const setTuitPrivate = tid => api.put(`${TUITS_API}/${tid}/private`);

@@ -28,7 +28,4 @@ const service = {
 export const updateUser = user =>
   axios.put(`${USERS_API}/${user._id}`, user).then(response => response.data);
 
-  export const getUserIdBySession = uid =>
-  axios.get(`${USERS_API}/session/${uid}`).then(response => response.data);
-
 export default service;
