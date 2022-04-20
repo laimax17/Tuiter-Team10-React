@@ -98,6 +98,7 @@ const Home = () => {
   const createTuit = () => {
     setTuit("");
     setImageUrl([]);
+    document.getElementById("my-google-map").style.display = "none";
     service
       .createTuit("my", { tuit: tuit, image: imageUrl, address: address })
       .then(findTuits);
