@@ -31,7 +31,6 @@ const TuitStats = ({ tuit, likeTuit = () => {}, dislikeTuit = () => {}, profile 
     service
       .findIfUserDislikesTuit("me", tuit._id)
       .then(dislike => setIfDislike(dislike));
-  //useEffect(findIfDislike, []);
 
   const clickLike = async () => {
     await likeTuit(tuit);
