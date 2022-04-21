@@ -1,10 +1,27 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import * as service from "../../services/tuits-service";
+import * as tuitService from "../../services/tuits-service";
 
 
-const TuitStats = ({ tuit, likeTuit = () => {}, dislikeTuit = () => {} }) => {
+const TuitStats = ({ tuit, likeTuit = () => {}, dislikeTuit = () => {}, profile }) => {
   const [ifLike, setIfLike] = useState(null);
+//privateStatus
+  const [privateStatus, setPrivateStatus] = useState("Set Private");
+
+
+  const changePrivate = async () => {
+    await tuitService.updateTuit(tuit._id, {
+      ...tuit,
+      isPrivate: !tuit.isPrivate
+    });
+
+    setPrivateStatus(
+      privateStatus == "Set Private" ? "Set Public" : "Set Private"
+    );
+  };
+
+
   const findIfLike = () =>
     service.findIfUserLikesTuit("me", tuit._id).then(like => setIfLike(like));
   //useEffect(findIfLike, []);
@@ -61,6 +78,11 @@ const TuitStats = ({ tuit, likeTuit = () => {}, dislikeTuit = () => {} }) => {
       <div className="col">
         <i className="far fa-inbox-out"></i>
       </div>
+       {tuit.postedBy._id == profile._id && (
+              <div className="col">
+                <button type="button" className="btn btn-outline-primary btn-sm" onClick={changePrivate}>{privateStatus}</button>
+              </div>
+            )}
     </div>
   );
 };

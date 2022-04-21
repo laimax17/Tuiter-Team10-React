@@ -34,23 +34,23 @@ const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit }) => {
   const { handleZoom } = useContext(TuitContext);
 
   const [profile, setProfile] = useState({});
-  const [privateStatus, setPrivateStatus] = useState("");
+  // const [privateStatus, setPrivateStatus] = useState("Set Private");
   useEffect(async () => {
     const user = await service.profile();
     setProfile(user);
-    setPrivateStatus(tuit.isPrivate ? "Set Public" : "Set Private");
+    // setPrivateStatus(tuit.isPrivate ? "Set Public" : "Set Private");
   }, []);
 
-  const changePrivate = async () => {
-    await tuitService.updateTuit(tuit._id, {
-      ...tuit,
-      isPrivate: !tuit.isPrivate
-    });
+  // const changePrivate = async () => {
+  //   await tuitService.updateTuit(tuit._id, {
+  //     ...tuit,
+  //     isPrivate: !tuit.isPrivate
+  //   });
 
-    setPrivateStatus(
-      privateStatus == "Set Private" ? "Set Public" : "Set Private"
-    );
-  };
+  //   setPrivateStatus(
+  //     privateStatus == "Set Private" ? "Set Public" : "Set Private"
+  //   );
+  // };
 
   if (tuit.isPrivate && tuit.postedBy._id != profile._id) {
     return <div></div>;
@@ -115,10 +115,16 @@ const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit }) => {
               tuit={tuit}
               likeTuit={likeTuit}
               dislikeTuit={dislikeTuit}
+              profile = {profile}
+              // privateStatus = {123123123}
+              // changePrivate = {changePrivate}
+              // show = {tuit.postedBy._id === profile._id}
             />
-            {tuit.postedBy._id == profile._id && (
+            {/* {tuit.postedBy._id == profile._id && (
+              <div className="col">
               <button onClick={changePrivate}>{privateStatus}</button>
-            )}
+              </div>
+            )} */}
           </div>
         </li>
       </div>
