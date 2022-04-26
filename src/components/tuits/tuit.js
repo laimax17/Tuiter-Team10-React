@@ -103,12 +103,12 @@ const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit }) => {
                 ))}
             </div>
             {tuit.address != "" && (
-              <div className="row" style={{ marginTop: "20px" }}>
+              <div className="row" style={{ marginTop: "20px", display: "flex", justifyContent: "flex-start", alignItems: "center" }}>
                 <i
                   className="fa fa-map-pin me-3 text-primary"
-                  style={{ display: "inline" }}
+                  style={{ display: "inline" , width: "20px", height: "20px"}}
                 ></i>
-                <div>{tuit.address}</div>
+                <span style={{width: "400px"}}>{tuit.address}</span>
               </div>
             )}
             <TuitStats
