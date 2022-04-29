@@ -87,6 +87,7 @@ const Tuit = ({ tuit, deleteTuit, likeTuit, dislikeTuit }) => {
               {tuit.image &&
                 tuit.image.map((url, index) => (
                   <div
+                    data-testid="background"
                     onClick={() => handleZoom(url)}
                     alt="Tuit Image"
                     className="m-1 img-thumbnail create-tuit-image"
