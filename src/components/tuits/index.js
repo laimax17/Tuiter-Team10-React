@@ -1,29 +1,32 @@
-import React from "react";
-import "./tuits.css";
-import Tuit from "./tuit";
-import * as likesService from "../../services/likes-service";
-import * as service from "../../services/tuits-service";
+import React from 'react'
+import './tuits.css'
+import Tuit from './tuit'
+import * as likesService from '../../services/likes-service'
+import * as service from '../../services/tuits-service'
 
+/**
+ * @component renders the tuits list
+ */
 const Tuits = ({ tuits = [], refreshTuits }) => {
-  const likeTuit = tuit =>
+  const likeTuit = (tuit) =>
     likesService
-      .userLikesTuit("me", tuit._id)
+      .userLikesTuit('me', tuit._id)
       .then(refreshTuits)
-      .catch(e => alert(e));
+      .catch((e) => alert(e))
 
-  const dislikeTuit = tuit =>
+  const dislikeTuit = (tuit) =>
     likesService
-      .userDislikesTuit("me", tuit._id)
+      .userDislikesTuit('me', tuit._id)
       .then(refreshTuits)
-      .catch(e => alert(e));
+      .catch((e) => alert(e))
 
-  const deleteTuit = tid => service.deleteTuit(tid).then(refreshTuits);
+  const deleteTuit = (tid) => service.deleteTuit(tid).then(refreshTuits)
 
   return (
     <div>
-      <ul className="ttr-tuits list-group">
+      <ul className='ttr-tuits list-group'>
         {tuits.map &&
-          tuits.map(tuit => (
+          tuits.map((tuit) => (
             <Tuit
               key={tuit._id}
               deleteTuit={deleteTuit}
@@ -34,7 +37,7 @@ const Tuits = ({ tuits = [], refreshTuits }) => {
           ))}
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default Tuits;
+export default Tuits

@@ -1,195 +1,206 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
-import * as service from "../../services/users-service";
-import { storage } from "../../firebase/firebase";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import "./profile.css";
+import React from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import * as service from '../../services/users-service'
+import { storage } from '../../firebase/firebase'
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
+import './profile.css'
 
+/**
+ * @component the edit profile page
+ */
 const EditProfile = () => {
-  const [profile, setProfile] = useState("");
-  const mlocation = useLocation();
+  const [profile, setProfile] = useState('')
+  const mlocation = useLocation()
   useEffect(() => {
-    setProfile(mlocation.state);
-  }, []);
+    setProfile(mlocation.state)
+  }, [])
 
-  const saveState = e => {
-    service.updateUser(profile);
-  };
+  const saveState = (e) => {
+    service.updateUser(profile)
+  }
 
-  const editBio = e => {
-    setProfile({ ...profile, biography: e.target.value });
-  };
+  const editBio = (e) => {
+    setProfile({ ...profile, biography: e.target.value })
+  }
 
-  const uploadAvatar = e => {
-    const image = e.target.files[0];
-    const storageRef = ref(storage, `/images/${image.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, image);
+  /**
+   * this function will upload the image to firebase storage when the user clicks the upload button
+   * @param {*} e
+   */
+  const uploadAvatar = (e) => {
+    const image = e.target.files[0]
+    const storageRef = ref(storage, `/images/${image.name}`)
+    const uploadTask = uploadBytesResumable(storageRef, image)
 
-    uploadTask.on("state_changed", () => {
-      getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
-        setProfile({ ...profile, avatar: downloadURL });
-      });
-    });
-  };
+    uploadTask.on('state_changed', () => {
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        setProfile({ ...profile, avatar: downloadURL })
+      })
+    })
+  }
 
-  const uploadHeader = e => {
-    const image = e.target.files[0];
-    const storageRef = ref(storage, `/images/${image.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, image);
+  /**
+   * this function will upload the image to firebase storage when the user clicks the upload button
+   * @param {*} e
+   */
+  const uploadHeader = (e) => {
+    const image = e.target.files[0]
+    const storageRef = ref(storage, `/images/${image.name}`)
+    const uploadTask = uploadBytesResumable(storageRef, image)
 
-    uploadTask.on("state_changed", () => {
-      getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
-        setProfile({ ...profile, header: downloadURL });
-      });
-    });
-  };
+    uploadTask.on('state_changed', () => {
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        setProfile({ ...profile, header: downloadURL })
+      })
+    })
+  }
 
   return (
-    <div className="ttr-edit-profile">
-      <div className="border border-bottom-0">
+    <div className='ttr-edit-profile'>
+      <div className='border border-bottom-0'>
         <Link
-          to="/profile/mytuits"
-          className="btn btn-light rounded-pill fa-pull-left fw-bolder mt-2 mb-2 ms-2"
+          to='/profile/mytuits'
+          className='btn btn-light rounded-pill fa-pull-left fw-bolder mt-2 mb-2 ms-2'
         >
-          <i className="fa fa-close"></i>
+          <i className='fa fa-close'></i>
         </Link>
         <Link
-          to="/profile/mytuits"
+          to='/profile/mytuits'
           onClick={saveState}
-          className="btn btn-dark rounded-pill fa-pull-right fw-bolder mt-2 mb-2 me-2"
+          className='btn btn-dark rounded-pill fa-pull-right fw-bolder mt-2 mb-2 me-2'
         >
           Save
         </Link>
-        <h4 className="p-2 mb-0 pb-0 fw-bolder">Edit profile</h4>
-        <div className="mb-5 position-relative">
+        <h4 className='p-2 mb-0 pb-0 fw-bolder'>Edit profile</h4>
+        <div className='mb-5 position-relative'>
           <div
-            className="w-100"
+            className='w-100'
             style={{
-              width: "100%",
-              height: "300px",
-              marginTop: "20px",
+              width: '100%',
+              height: '300px',
+              marginTop: '20px',
               backgroundImage: `url(${profile.header})`,
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "cover"
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'cover',
             }}
           />
-          <div className="bottom-0 left-0 position-absolute">
-            <div className="position-relative">
+          <div className='bottom-0 left-0 position-absolute'>
+            <div className='position-relative'>
               <img
-                className="rounded-circle position-relative ttr-z-index-1 ttr-top-40px ttr-width-150px profile-logo"
+                className='rounded-circle position-relative ttr-z-index-1 ttr-top-40px ttr-width-150px profile-logo'
                 src={profile.avatar}
               />
             </div>
           </div>
         </div>
       </div>
-      <form action="profile.html">
-        <div className="border border-secondary rounded-3 p-2 mb-3">
-          <label htmlFor="username">Username</label>
+      <form action='profile.html'>
+        <div className='border border-secondary rounded-3 p-2 mb-3'>
+          <label htmlFor='username'>Username</label>
           <input
-            id="username"
-            title="Username"
+            id='username'
+            title='Username'
             readOnly
-            className="p-0 form-control border-0"
+            className='p-0 form-control border-0'
             placeholder={profile.username}
           />
         </div>
-        <div className="border border-secondary rounded-3 p-2 mb-3">
-          <label htmlFor="first-name">First name</label>
+        <div className='border border-secondary rounded-3 p-2 mb-3'>
+          <label htmlFor='first-name'>First name</label>
           <input
-            id="first-name"
-            className="p-0 form-control border-0"
-            placeholder="First Name"
+            id='first-name'
+            className='p-0 form-control border-0'
+            placeholder='First Name'
             value={profile.firstName}
           />
         </div>
-        <div className="border border-secondary rounded-3 p-2 mb-3">
-          <label htmlFor="last-name">Last name</label>
+        <div className='border border-secondary rounded-3 p-2 mb-3'>
+          <label htmlFor='last-name'>Last name</label>
           <input
-            id="last-name"
-            className="p-0 form-control border-0"
-            placeholder="Last Name"
+            id='last-name'
+            className='p-0 form-control border-0'
+            placeholder='Last Name'
             value={profile.lastName}
           />
         </div>
-        <div className="border border-secondary rounded-3 p-2 mb-3">
-          <label htmlFor="bio">Bio</label>
+        <div className='border border-secondary rounded-3 p-2 mb-3'>
+          <label htmlFor='bio'>Bio</label>
           <textarea
             onChange={editBio}
-            className="p-0 form-control border-0"
-            id="bio"
+            className='p-0 form-control border-0'
+            id='bio'
           ></textarea>
         </div>
-        <div className="border border-secondary rounded-3 p-2 mb-3">
-          <label htmlFor="date-of-birth">Date of birth</label>
+        <div className='border border-secondary rounded-3 p-2 mb-3'>
+          <label htmlFor='date-of-birth'>Date of birth</label>
           <input
-            id="date-of-birth"
-            className="p-0 form-control border-0"
-            type="date"
-            value="2003-01-02"
+            id='date-of-birth'
+            className='p-0 form-control border-0'
+            type='date'
+            value='2003-01-02'
           />
         </div>
-        <div className="border border-secondary rounded-3 p-2 mb-3">
-          <label htmlFor="email">Email</label>
+        <div className='border border-secondary rounded-3 p-2 mb-3'>
+          <label htmlFor='email'>Email</label>
           <input
-            id="email"
-            placeholder="alan@cam.ac.uk"
-            className="p-0 form-control border-0"
-            type="email"
+            id='email'
+            placeholder='alan@cam.ac.uk'
+            className='p-0 form-control border-0'
+            type='email'
           />
         </div>
-        <div className="border border-secondary rounded-3 p-2 mb-3">
-          <label htmlFor="password">Reset password</label>
+        <div className='border border-secondary rounded-3 p-2 mb-3'>
+          <label htmlFor='password'>Reset password</label>
           <input
-            id="password"
-            className="p-0 form-control border-0"
-            type="password"
+            id='password'
+            className='p-0 form-control border-0'
+            type='password'
           />
         </div>
-        <div className="border border-secondary rounded-3 p-2 mb-3">
-          <label for="photo">Profile photo</label>
+        <div className='border border-secondary rounded-3 p-2 mb-3'>
+          <label for='photo'>Profile photo</label>
           <input
-            id="photo"
-            className="p-0 form-control border-0"
+            id='photo'
+            className='p-0 form-control border-0'
             onChange={uploadAvatar}
-            type="file"
+            type='file'
           />
         </div>
-        <div className="border border-secondary rounded-3 p-2 mb-3">
-          <label for="header">Header image</label>
+        <div className='border border-secondary rounded-3 p-2 mb-3'>
+          <label for='header'>Header image</label>
           <input
-            id="header"
-            className="p-0 form-control border-0"
+            id='header'
+            className='p-0 form-control border-0'
             onChange={uploadHeader}
-            type="file"
+            type='file'
           />
         </div>
-        <div className="border border-secondary rounded-3 p-2 mb-3">
-          <label for="account">Select account</label>
-          <select className="p-0 form-control border-0" id="account">
+        <div className='border border-secondary rounded-3 p-2 mb-3'>
+          <label for='account'>Select account</label>
+          <select className='p-0 form-control border-0' id='account'>
             <option>Personal account</option>
             <option selected>Academic account</option>
           </select>
         </div>
-        <div className="border border-secondary rounded-3 p-2 mb-3">
+        <div className='border border-secondary rounded-3 p-2 mb-3'>
           Marital status
-          <input id="married" type="radio" name="marital" />
-          <label for="married">Married</label>
-          <input id="single" type="radio" checked name="marital" />
-          <label for="single">Single</label>
+          <input id='married' type='radio' name='marital' />
+          <label for='married'>Married</label>
+          <input id='single' type='radio' checked name='marital' />
+          <label for='single'>Single</label>
         </div>
-        <div className="border border-secondary rounded-3 p-2 mb-3">
+        <div className='border border-secondary rounded-3 p-2 mb-3'>
           Topics of interest
-          <input id="space" type="checkbox" checked name="topics" />
-          <label for="space">Space</label>
-          <input id="energy" type="checkbox" checked name="topics" />
-          <label for="energy">Energy</label>
-          <input id="politics" type="checkbox" name="topics" />
-          <label for="politics">Politics</label>
+          <input id='space' type='checkbox' checked name='topics' />
+          <label for='space'>Space</label>
+          <input id='energy' type='checkbox' checked name='topics' />
+          <label for='energy'>Energy</label>
+          <input id='politics' type='checkbox' name='topics' />
+          <label for='politics'>Politics</label>
         </div>
       </form>
     </div>
-  );
-};
-export default EditProfile;
+  )
+}
+export default EditProfile
